@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppStore } from '../state/store';
 import ConfirmDialog from './ConfirmDialog';
 import { exportJson, importJson } from '../utils/importExport';
 import { snapshotBoard } from '../utils/snapshot';
+import ActionsMenu from './ActionsMenu';
 
 interface Props { appRef: React.RefObject<HTMLDivElement> }
 
@@ -20,6 +21,7 @@ const Toolbar: React.FC<Props> = ({ appRef }) => {
 
   const searchRef = useRef<HTMLInputElement>(null);
   const confirmRef = useRef<{ open: (opts: { title: string, phrase: string, onConfirm: () => void }) => void }>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!searchFocusRequest) return;
@@ -56,6 +58,7 @@ const Toolbar: React.FC<Props> = ({ appRef }) => {
         onChange={(e) => setFilterQuery(e.target.value)}
         aria-label="Search"
       />
+      <button className="btn actions-menu-btn" onClick={() => setMenuOpen(true)} title="Actions">⋯ Actions</button>
       <div className="toolbar-actions">
         <button className="btn" onClick={() => useAppStore.getState().addItemToCurrentColumn()}>Add Item</button>
         <button className="btn" onClick={() => onSnapshotBoard(false)}>Snapshot board</button>
@@ -70,6 +73,24 @@ const Toolbar: React.FC<Props> = ({ appRef }) => {
         <button className="btn" onClick={toggleGlobalDetails}>{showDetails ? 'Hide details' : 'Show details'}</button>
       </div>
       <ConfirmDialog ref={confirmRef} />
+      <ActionsMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        actions={{
+          addItem: () => useAppStore.getState().addItemToCurrentColumn(),
+          snapshotBoard: () => onSnapshotBoard(false),
+          snapshotTab: onSnapshotTab,
+          snapshotNoDetails: () => onSnapshotBoard(true),
+          quickGuide: toggleQuickGuide,
+          importJson: () => importJson(),
+          exportJson: () => exportJson(),
+          wipeDone: openWipeDone,
+          wipeTab: openWipeTab,
+          wipeAll: openWipeAll,
+          toggleDetails: toggleGlobalDetails,
+          showDetails,
+        }}
+      />
     </div>
   );
 };

@@ -7,7 +7,7 @@ html,body,#root{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,Segoe UI,Roboto,Arial}
 .app{display:flex;flex-direction:column;min-height:100%}
 
-.toolbar-wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,253,253,0.95);backdrop-filter:saturate(180%) blur(4px);z-index:10}
+.toolbar-wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(253,253,253,0.95);backdrop-filter:saturate(180%) blur(4px);z-index:10;flex-wrap:wrap}
 .tab-switcher{display:flex;gap:6px}
 .tab-btn{border:1px solid var(--line);background:#fff;padding:6px 10px;border-radius:8px;cursor:pointer}
 .tab-btn.active{box-shadow:0 0 0 2px var(--shadow) inset}
@@ -17,6 +17,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,Segoe
 .toolbar{display:flex;gap:12px;align-items:center;flex:1;justify-content:flex-end}
 .toolbar .search{flex:1;max-width:420px;border:1px solid var(--line);border-radius:8px;padding:6px 10px}
 .toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions-menu-btn{display:none}
 .btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer}
 .btn.warn{border-color:#f2b400}
 .btn.danger{border-color:#d33;color:#d33}
@@ -42,3 +43,11 @@ input,textarea{border:1px solid var(--line);border-radius:8px;padding:6px 8px;fo
 /* Focus */
 button:focus,input:focus,textarea:focus,.card:focus{outline:3px solid #a7c8ff;outline-offset:2px}
 
+@media (max-width: 640px){
+  .toolbar-wrap{gap:6px;padding:6px 8px}
+  .tab-btn{padding:4px 8px;border-radius:6px;font-size:13px}
+  .toolbar{gap:6px}
+  .toolbar .search{max-width:none}
+  .toolbar-actions{display:none}
+  .actions-menu-btn{display:inline-flex}
+}
