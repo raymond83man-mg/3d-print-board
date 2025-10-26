@@ -26,9 +26,11 @@ jobs:
           node-version: 20
           cache: npm
       - name: Install deps
-        run: npm ci
+        run: npm install
       - name: Build
         run: npm run build
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -44,4 +46,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
