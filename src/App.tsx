@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import Board from './components/Board';
 import Toolbar from './components/Toolbar';
 import QuickGuide from './components/QuickGuide';
@@ -23,6 +23,9 @@ function App() {
 
   const appRef = useRef<HTMLDivElement>(null);
   const [dragInfo, setDragInfo] = useState<{ tab: any; id: string } | null>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+  );
 
   useEffect(() => {
     const unsub = saveStateSubscribe(useAppStore);
@@ -84,7 +87,7 @@ function App() {
         <TabSwitcher />
         <Toolbar appRef={appRef} />
       </header>
-      <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+      <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <Board />
         <DragOverlay dropAnimation={{ duration: 150 }}>
           {dragInfo ? (

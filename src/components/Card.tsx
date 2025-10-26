@@ -48,10 +48,9 @@ const CardView: React.FC<Props> = ({ id, tabId, columnId, index }) => {
       style={style}
       onClick={onClickCard}
       tabIndex={0}
-      {...attributes}
-      {...listeners}
     >
       <div className="card-head">
+        <button className="drag-handle" title="Drag" aria-label="Drag" {...attributes} {...listeners}>⋮⋮</button>
         <span className={classNames('priority', `p${card.priority}`)} aria-label={card.priority ? `Priority ${card.priority}` : 'No priority'}>
           {priorityBadge(card.priority)}
         </span>
@@ -60,8 +59,6 @@ const CardView: React.FC<Props> = ({ id, tabId, columnId, index }) => {
         </div>
         <div className="card-actions">
           <button className="icon-btn" title="Edit" onClick={(e) => { e.stopPropagation(); useAppStore.setState(s => ({ cardUi: { ...s.cardUi, [id]: { ...(s.cardUi[id] || {}), editingNotes: true } } })); }}>✎</button>
-          <button className="icon-btn" title="Duplicate" onClick={(e) => { e.stopPropagation(); duplicateCard(tabId, id); }}>⎘</button>
-          <button className="icon-btn" title="Delete" onClick={(e) => { e.stopPropagation(); onDelete(); }}>🗑</button>
         </div>
       </div>
       {showDetails && (
