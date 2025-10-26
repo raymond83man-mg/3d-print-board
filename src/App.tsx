@@ -8,6 +8,7 @@ import { useAppStore } from './state/store';
 import { saveStateSubscribe } from './utils/persistence';
 import { selectActiveTab, selectShowQuickGuide } from './state/selectors';
 import DragPreviewCard from './components/DragPreviewCard';
+import { setupAutoSync } from './utils/sync';
 
 function App() {
   const activeTab = useAppStore(selectActiveTab);
@@ -26,6 +27,16 @@ function App() {
   useEffect(() => {
     const unsub = saveStateSubscribe(useAppStore);
     return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    const onOpenSettings = () => {
+      // Forward event to Toolbar via state
+      useAppStore.setState(s => s); // no-op; Toolbar listens to event
+    };
+    window.addEventListener('open-settings', onOpenSettings);
+    const unsub = setupAutoSync();
+    return () => { window.removeEventListener('open-settings', onOpenSettings); unsub && unsub(); };
   }, []);
 
   useEffect(() => {

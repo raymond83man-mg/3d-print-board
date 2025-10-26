@@ -39,6 +39,11 @@ const ActionsMenu: React.FC<Props> = ({ open, onClose, actions }) => {
           <button className="btn warn" onClick={() => { actions.wipeTab(); onClose(); }}>Wipe current tab</button>
           <button className="btn danger" onClick={() => { actions.wipeAll(); onClose(); }}>Wipe all</button>
         </div>
+        <hr style={{border:'none',borderTop:'1px solid var(--line)',margin:'10px 0'}} />
+        <p className="hint">Sync</p>
+        <div style={{ display: 'grid', gap: 8 }}>
+          <button className="btn" onClick={() => { const ev = new CustomEvent('open-settings'); window.dispatchEvent(ev); onClose(); }}>Settings & Sync</button>
+        </div>
         <div className="modal-actions">
           <button className="btn" onClick={onClose}>Close</button>
         </div>
@@ -48,4 +53,3 @@ const ActionsMenu: React.FC<Props> = ({ open, onClose, actions }) => {
 };
 
 export default ActionsMenu;
-

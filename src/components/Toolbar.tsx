@@ -4,6 +4,7 @@ import ConfirmDialog from './ConfirmDialog';
 import { exportJson, importJson } from '../utils/importExport';
 import { snapshotBoard } from '../utils/snapshot';
 import ActionsMenu from './ActionsMenu';
+import Settings from './Settings';
 
 interface Props { appRef: React.RefObject<HTMLDivElement> }
 
@@ -22,6 +23,12 @@ const Toolbar: React.FC<Props> = ({ appRef }) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const confirmRef = useRef<{ open: (opts: { title: string, phrase: string, onConfirm: () => void }) => void }>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  React.useEffect(() => {
+    const handler = () => setSettingsOpen(true);
+    window.addEventListener('open-settings', handler);
+    return () => window.removeEventListener('open-settings', handler);
+  }, []);
 
   useEffect(() => {
     if (!searchFocusRequest) return;
@@ -91,6 +98,8 @@ const Toolbar: React.FC<Props> = ({ appRef }) => {
           showDetails,
         }}
       />
+      <button className="btn" style={{display:'none'}} />
+      <Settings open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 };
